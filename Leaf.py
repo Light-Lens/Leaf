@@ -49,7 +49,7 @@ class Leaf(QMainWindow):
 
 		self.Home = QPushButton("Home", self)
 		self.Home.setStyleSheet("background-color : #f9f9f9")
-		self.Home.triggered.connect(self.Go_HOME)
+		self.Home.clicked.connect(self.Go_HOME)
 		self.Toolbar.addWidget(self.Home)
 
 		self.Toolbar.addSeparator()
