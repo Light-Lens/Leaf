@@ -21,7 +21,7 @@ init(autoreset = True)
 System_details = platform.uname()
 
 # Setting up Terminal
-print("Leaf browser\n")
+print(Fore.GREEN + "Leaf browser")
 print(Fore.GREEN + f"Host: {System_details.node}")
 print(Fore.GREEN + f"System: {System_details.system} {System_details.release}")
 print(Fore.GREEN + f"Processor: {System_details.processor}\n")
@@ -32,7 +32,7 @@ class Leaf(QMainWindow):
 		super(Leaf, self).__init__(*args, **kwargs)
 		# Setting up window
 		self.setWindowTitle("Leaf")
-		self.setGeometry(100, 100, 1000, 575)
+		self.setGeometry(25, 25, 1000, 575)
 
 		# Opening Google
 		self.browser = QWebEngineView()
@@ -44,13 +44,25 @@ class Leaf(QMainWindow):
 		# Adding a toolbar to Leaf
 		self.Toolbar = QToolBar("Navigation")
 		self.Toolbar.setMovable(False)
-		self.Toolbar.setStyleSheet("background-color : #2c2c2c")
+		self.Toolbar.setFixedHeight(33)
 		self.addToolBar(self.Toolbar)
+
+		self.Home = QPushButton("Home", self)
+		self.Home.setStyleSheet("background-color : #f9f9f9")
+		self.Home.triggered.connect(self.Go_HOME)
+		self.Toolbar.addWidget(self.Home)
+
+		self.Toolbar.addSeparator()
 
 		self.urlbar = QLineEdit()
 		self.urlbar.setStyleSheet("background-color : #f9f9f9")
+		self.urlbar.setFixedHeight(23)
 		self.urlbar.returnPressed.connect(self.navigate_to_url)
 		self.Toolbar.addWidget(self.urlbar)
+
+	# Open Google (Home page for Leaf)
+	def Go_HOME(self):
+		self.browser.setUrl(QUrl("http://google.com"))
 
 	# Update title of the window
 	def update_title(self):
