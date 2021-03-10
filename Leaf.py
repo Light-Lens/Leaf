@@ -25,6 +25,7 @@ print(Fore.GREEN + "Leaf")
 print(Fore.GREEN + f"Host: {System_details.node}")
 print(Fore.GREEN + f"System: {System_details.system} {System_details.release}")
 print("========================================================================================================>")
+print("Leaf might take some time to start.")
 
 # Setting up Leaf class
 class Leaf(QMainWindow):
@@ -32,6 +33,7 @@ class Leaf(QMainWindow):
 		super(Leaf, self).__init__(*args, **kwargs)
 		# Setting up window
 		self.setWindowTitle("Leaf")
+		self.setWindowIcon(QIcon(".\\res\\Logo.png"))
 		self.setGeometry(10, 70, 1000, 575)
 
 		# Opening Google
