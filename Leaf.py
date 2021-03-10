@@ -14,17 +14,17 @@ import sys
 import os
 
 # Initializing Leaf browser
-os.system('title Leaf browser')
+os.system('title Leaf')
 init(autoreset = True)
 
 # Global variables
 System_details = platform.uname()
 
 # Setting up Terminal
-print(Fore.GREEN + "Leaf browser")
+print(Fore.GREEN + "Leaf")
 print(Fore.GREEN + f"Host: {System_details.node}")
 print(Fore.GREEN + f"System: {System_details.system} {System_details.release}")
-print(Fore.GREEN + f"Processor: {System_details.processor}\n")
+print("========================================================================================================>")
 
 # Setting up Leaf class
 class Leaf(QMainWindow):
@@ -32,7 +32,7 @@ class Leaf(QMainWindow):
 		super(Leaf, self).__init__(*args, **kwargs)
 		# Setting up window
 		self.setWindowTitle("Leaf")
-		self.setGeometry(25, 25, 1000, 575)
+		self.setGeometry(10, 70, 1000, 575)
 
 		# Opening Google
 		self.browser = QWebEngineView()
@@ -44,25 +44,41 @@ class Leaf(QMainWindow):
 		# Adding a toolbar to Leaf
 		self.Toolbar = QToolBar("Navigation")
 		self.Toolbar.setMovable(False)
-		self.Toolbar.setFixedHeight(33)
+		self.Toolbar.setFixedHeight(40)
+		self.Toolbar.setStyleSheet("background-color : #1a1a1a")
 		self.addToolBar(self.Toolbar)
 
-		self.Home = QPushButton("Home", self)
-		self.Home.setStyleSheet("background-color : #f9f9f9")
-		self.Home.clicked.connect(self.Go_HOME)
-		self.Toolbar.addWidget(self.Home)
+		self.back_btn = QAction(QIcon(os.path.join('res', 'Arrow-Back.png')), "Back", self)
+		self.back_btn.setStatusTip("Go Back One Page")
+		self.back_btn.triggered.connect(self.browser.back)
+		self.Toolbar.addAction(self.back_btn)
 
-		self.Toolbar.addSeparator()
+		self.forward_btn = QAction(QIcon(os.path.join('res', 'Arrow-Forward.png')), "Forward", self)
+		self.forward_btn.setStatusTip("Go Forward One Page")
+		self.forward_btn.triggered.connect(self.browser.forward)
+		self.Toolbar.addAction(self.forward_btn)
+
+		self.reload_btn = QAction(QIcon(os.path.join('res', 'Reload.png')), "Reload", self)
+		self.reload_btn.setStatusTip("Reload Current Page")
+		self.reload_btn.triggered.connect(self.browser.reload)
+		self.Toolbar.addAction(self.reload_btn)
+
+		self.home_btn = QAction(QIcon(os.path.join('res', 'Home.png')), "Home", self)
+		self.home_btn.setStatusTip("Leaf Home Page")
+		self.home_btn.triggered.connect(self.Go_HOME)
+		self.Toolbar.addAction(self.home_btn)
 
 		self.urlbar = QLineEdit()
-		self.urlbar.setStyleSheet("background-color : #f9f9f9")
-		self.urlbar.setFixedHeight(23)
+		self.font = self.urlbar.font()
+		self.font.setPointSize(10)
+		self.urlbar.setStyleSheet("color: #f9f9f9; background-color: #3d3d3d; border: none")
+		self.urlbar.setFixedHeight(30)
 		self.urlbar.returnPressed.connect(self.navigate_to_url)
 		self.Toolbar.addWidget(self.urlbar)
+		self.urlbar.setFont(self.font)
 
 	# Open Google (Home page for Leaf)
-	def Go_HOME(self):
-		self.browser.setUrl(QUrl("http://google.com"))
+	def Go_HOME(self): self.browser.setUrl(QUrl("https://www.google.com"))
 
 	# Update title of the window
 	def update_title(self):
