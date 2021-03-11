@@ -38,7 +38,7 @@ class Leaf(QMainWindow):
 
 		# Opening Google
 		self.browser = QWebEngineView()
-		self.browser.setUrl(QUrl("http://google.com"))
+		self.browser.setUrl(QUrl("https://www.google.com"))
 		self.browser.urlChanged.connect(self.update_urlbar)
 		self.browser.loadFinished.connect(self.update_title)
 		self.setCentralWidget(self.browser)
@@ -47,7 +47,7 @@ class Leaf(QMainWindow):
 		self.Toolbar = QToolBar("Navigation")
 		self.Toolbar.setMovable(False)
 		self.Toolbar.setFixedHeight(40)
-		self.Toolbar.setStyleSheet("background-color : #1a1a1a")
+		self.Toolbar.setStyleSheet("background-color: #1a1a1a")
 		self.addToolBar(self.Toolbar)
 
 		self.back_btn = QAction(QIcon(os.path.join('res', 'Arrow-Back.png')), "Back", self)
