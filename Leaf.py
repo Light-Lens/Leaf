@@ -13,15 +13,18 @@ import sys, os
 
 # Initializing Leaf browser
 class Leaf(QMainWindow):
-	def __init__(self, *args, **kwargs): 
-		super(Leaf, self).__init__(*args, **kwargs)
+	def __init__(self): 
+		super(Leaf, self).__init__()
+
 		# Setting up window
 		self.setWindowTitle("Leaf")
 		self.setWindowIcon(QIcon(".\\res\\Logo.png"))
-		self.setGeometry(10, 70, 1000, 575)
+		self.showMaximized()
 
 		# Opening Google
 		self.browser = QWebEngineView()
+		self.browser.settings().setAttribute(QWebEngineSettings.FullScreenSupportEnabled, True)
+		self.browser.page().fullScreenRequested.connect(lambda request: request.accept())
 		self.browser.setUrl(QUrl("https://www.google.co.in"))
 		self.browser.urlChanged.connect(self.update_urlbar)
 		self.browser.loadFinished.connect(self.update_title)
@@ -30,8 +33,8 @@ class Leaf(QMainWindow):
 		# Adding a toolbar to Leaf
 		self.Toolbar = QToolBar("Navigation")
 		self.Toolbar.setMovable(False)
-		self.Toolbar.setFixedHeight(30)
-		self.Toolbar.setStyleSheet("background-color: #1a1a1a")
+		self.Toolbar.setFixedHeight(40)
+		self.Toolbar.setStyleSheet("background-color: #111111;")
 		self.addToolBar(self.Toolbar)
 
 		self.back_btn = QAction(QIcon(os.path.join('res', 'Arrow-Back.png')), "Go Back One Page", self)
@@ -56,9 +59,29 @@ class Leaf(QMainWindow):
 
 		self.urlbar = QLineEdit()
 		self.font = self.urlbar.font()
-		self.font.setPointSize(10)
-		self.urlbar.setStyleSheet("color: #f9f9f9; background-color: #3d3d3d; border: none")
-		self.urlbar.setFixedHeight(20)
+		self.font.setPointSize(11)
+		self.urlbar.setStyleSheet(
+			"QLineEdit"
+			"{"
+			"color: #9f9f9f;"
+			"background-color: #1a1a1a;"
+			"border: none;"
+			"border-radius: 15px;"
+			"padding-left: 15px;"
+			"font-family: Calibri;"
+			"}"
+			"QLineEdit:hover"
+			"{"
+			"color: #f9f9f9;"
+			"background-color: #2c2c2c;"
+			"}"
+			"QLineEdit:focus"
+			"{"
+			"color: #f9f9f9;"
+			"background-color: #2c2c2c;"
+			"}"
+			)
+		self.urlbar.setFixedHeight(30)
 		self.urlbar.returnPressed.connect(self.navigate_to_url)
 		self.Toolbar.addWidget(self.urlbar)
 		self.urlbar.setFont(self.font)
@@ -68,17 +91,13 @@ class Leaf(QMainWindow):
 		self.stop_btn.triggered.connect(self.browser.stop)
 		self.Toolbar.addAction(self.stop_btn)
 
-		self.options_btn = QAction(QIcon(os.path.join('res', 'Options.png')), "Options menu", self)
-		self.options_btn.setStatusTip("Options menu")
-		self.Toolbar.addAction(self.options_btn)
-
 	# Open Google (Home page for Leaf)
 	def Go_HOME(self): self.browser.setUrl(QUrl("https://www.google.co.in"))
 
 	# Update title of the window
 	def update_title(self):
-		title = self.browser.page().title()
-		self.setWindowTitle("%s - Leaf" % title)
+		Title = self.browser.page().title()
+		self.setWindowTitle(f"{Title} - Leaf")
 
 	# Navigate to url
 	def navigate_to_url(self):
@@ -93,7 +112,12 @@ class Leaf(QMainWindow):
 
 # Setting up Leaf
 if __name__ == '__main__':
+	init(autoreset = True)
+	os.system("title Leaf")
+	print(Fore.GREEN + "Launching Leaf!")
+
 	app = QApplication(sys.argv)
 	Leaf = Leaf()
+	print("Leaf Launched Successfully!\n")
 	Leaf.show()
 	app.exec_()
